@@ -1,0 +1,151 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url('plane_2.jpg') no-repeat center center;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 950px;
+  margin: 10px auto; /* Removed top margin */
+  padding: 10px; /* Remove padding from container */
+  background-color: #fff;
+  box-shadow: 0 0 12px #007bff;;
+  border-radius: 12px;
+  
+  overflow: hidden; /* Ensures header corners match container */
+}
+
+.header {
+  /* background: linear-gradient(135deg, #007bff, #00a8ff); */
+  background-color: transparent;
+  color: white;
+  padding: 30px 20px;
+  margin: 0; /* Remove negative margins */
+   /* Only round top corners */
+  text-align: center;
+  box-shadow: none; /* Remove shadow as container has it */
+  position: relative;
+  min-height: 120px;
+}
+
+.header img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 3px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  object-fit: cover;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  color: white;
+  padding-left: 60px;
+  padding-top: 29px;
+  right: 23%;
+}
+
+.header h1:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: white;
+  border-radius: 3px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  height: 40px; /* Fixed height */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box; /* Ensures padding doesn't affect final size */
+}
+
+button {
+  display: block;
+  width: 100%;
+  height: 48px; /* Consistent with other elements */
+  background-color: #007bff;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#result {
+  margin-top: 30px;
+  padding: 20px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+#result.high-satisfaction {
+  background-color: #e8f5e9;
+  border-left-color: #2e7d32;
+  color: #1b5e20;
+}
+#result.low-satisfaction {
+  background-color: #ffebee;
+  border-left-color: #c62828;
+  color: #b71c1c;
+}
+.prediction-text {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.confidence {
+  font-style: italic;
+  color: #666;
+  font-size: 16px;
+}
+small {
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+}

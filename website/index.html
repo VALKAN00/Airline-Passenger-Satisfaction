@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Satisfaction Predictor</title>
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+  <div class="header"><img src="download.jpeg" alt=""> <h1>Airline Satisfaction Predictor</h1></div>
+  <div class="container">
+   
+    <form id="satisfaction-form">
+      <div class="form-group">
+        <label>What is your gender?</label>
+        <select name="Gender">
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Are you a loyal or disloyal customer?</label>
+        <select name="Customer Type">
+          <option>Loyal Customer</option>
+          <option>Disloyal Customer</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>How old are you?</label><input type="number" name="Age" required></div>
+
+      <div class="form-group">
+        <label>What type of travel is this?</label>
+        <select name="Type of Travel">
+          <option>Business travel</option>
+          <option>Personal Travel</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>What class did you travel in?</label>
+        <select name="Class">
+          <option>Eco</option>
+          <option>Eco Plus</option>
+          <option>Business</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>How long was your flight distance (in miles)?</label><input type="number" name="Flight Distance" required></div>
+
+      <!-- Rating questions -->
+      <script>
+        
+  const features = [
+    ["How would you rate the inflight wifi service? (0-5)", "Inflight wifi service"],
+    ["How convenient was your departure/arrival time? (0-5)", "Departure/Arrival time convenient"],
+    ["How easy was the online booking process? (0-5)", "Ease of Online booking"],
+    ["How satisfied were you with the gate location? (0-5)", "Gate location"],
+    ["How would you rate the food and drink service? (0-5)", "Food and drink"],
+    ["How satisfied were you with the online boarding process? (0-5)", "Online boarding"],
+    ["How comfortable was your seat? (0-5)", "Seat comfort"],
+    ["How would you rate the inflight entertainment? (0-5)", "Inflight entertainment"],
+    ["How satisfied were you with the on-board service? (0-5)", "On-board service"],
+    ["How would you rate the leg room service? (0-5)", "Leg room service"],
+    ["How satisfied were you with the baggage handling? (0-5)", "Baggage handling"],
+    ["How would you rate the check-in service? (0-5)", "Checkin service"],
+    ["How satisfied were you with the inflight service? (0-5)", "Inflight service"],
+    ["How clean was the aircraft? (0-5)", "Cleanliness"],
+    ["How many minutes was your departure delayed?", "Departure Delay in Minutes"],
+    ["How many minutes was your arrival delayed?", "Arrival Delay in Minutes"]
+  ];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("satisfaction-form");
+    const submitBefore = form.querySelector("button") || null;
+
+    features.forEach(feature => {
+      const div = document.createElement("div");
+      div.className = "form-group";
+
+      const label = document.createElement("label");
+      label.textContent = feature[0];
+
+      const input = document.createElement("input");
+      input.type = "number";
+      input.name = feature[1];
+      input.required = true;
+      
+      // Only set min/max for rating questions (0-5)
+      if (!feature[1].includes("Delay")) {
+        input.min = 0;
+        input.max = 5;
+      }
+
+      const note = document.createElement("small");
+      note.textContent = feature[1].includes("Delay") ? "" : "(0 = Very Poor, 5 = Excellent)";
+
+      div.appendChild(label);
+      div.appendChild(input);
+      if (!feature[1].includes("Delay")) {
+        div.appendChild(note);
+      }
+      form.insertBefore(div, submitBefore);
+    });
+
+    // Form submission handler
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const submitButton = form.querySelector("button");
+      submitButton.disabled = true;
+      submitButton.textContent = "Predicting...";
+      
+      try {
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+          // Convert numeric fields to numbers
+          data[key] = isNaN(value) ? value : Number(value);
+        });
+        
+        // Simulate API call (replace with actual API endpoint)
+        const response = await simulatePrediction(data);
+        
+        displayResult(response.prediction, response.satisfactionRate);
+      } catch (error) {
+        document.getElementById("result").innerHTML = 
+          `<div class="prediction-text">Error</div>
+           <div>${error.message}</div>`;
+        document.getElementById("result").className = "low-satisfaction";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Predict Satisfaction";
+      }
+    });
+  });
+
+  // Simulate prediction (replace with actual API call)
+  async function simulatePrediction(data) {
+    // This is a mock function - replace with actual API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Simple mock logic based on some inputs
+        const satisfactionScore = 
+          (data['Inflight wifi service'] + 
+           data['Food and drink'] + 
+           data['Seat comfort'] +  // Fixed typo here (was 'Seat comfort')
+           data['Inflight entertainment']) / 4;
+        
+        const isSatisfied = satisfactionScore >= 3;
+        const satisfactionRate = Math.min(95, Math.floor(satisfactionScore * 20));
+        
+        resolve({
+          prediction: isSatisfied ? "Satisfied" : "Not Satisfied",
+          satisfactionRate: satisfactionRate
+        });
+      }, 1000);
+    });
+  }
+
+  function displayResult(prediction, satisfactionRate) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+      <div class="prediction-text">Prediction: ${prediction}</div>
+      <div class="satisfaction-rate">Satisfaction Rate: ${satisfactionRate}%</div>
+    `;
+    
+    // Clear previous classes
+    resultDiv.className = '';
+    
+    // Add appropriate class based on prediction
+    if (prediction === 'Satisfied') {
+      resultDiv.classList.add('high-satisfaction');
+    } else {
+      resultDiv.classList.add('low-satisfaction');
+    }
+  }
+</script>
+      </script>
+
+      <button type="submit">Predict Satisfaction</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+</body>
+</html>
