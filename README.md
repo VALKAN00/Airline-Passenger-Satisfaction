@@ -30,7 +30,10 @@ We will analyze a large-scale dataset (>10,000 records, ≥20 features) using **
 
 ## 📋 Project Tasks  
 
-### 1️⃣ Dataset Selection  
+### 1️⃣ Dataset Selection
+
+[ِDataset](https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction/data)
+
 ✅ **Requirements**:  
 - Minimum 10,000 records  
 - At least 20 features  
